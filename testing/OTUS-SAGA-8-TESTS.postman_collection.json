@@ -1,0 +1,1053 @@
+{
+	"info": {
+		"_postman_id": "e99d941a-bb54-4dc2-acd6-fa7e72d5aed8",
+		"name": "OTUS-SAGA-8-TESTS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20628036",
+		"_collection_link": "https://www.postman.com/alexkorkhov/workspace/public/collection/20628036-e99d941a-bb54-4dc2-acd6-fa7e72d5aed8?action=share&source=collection_link&creator=20628036"
+	},
+	"item": [
+		{
+			"name": "1. Create User1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"username1\", pm.variables.replaceIn('{{$randomUserName}}'))\r",
+							"pm.collectionVariables.set(\"username2\", pm.variables.replaceIn('{{$randomUserName}}'))\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"userId1\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username1}}\",\r\n    \"firstName\": \"Fedor\",\r\n    \"lastName\": \"Uvanov\",\r\n    \"email\": \"ivanov@example.com\",\r\n    \"phone\": \"11111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/msusers/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"msusers",
+						"user"
+					]
+				},
+				"description": "Создаем пользователя 1 в сервисе msusers\n\nСинхронно создается account в биллинге с балансом 0"
+			},
+			"response": []
+		},
+		{
+			"name": "2. View Account of User1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId1}}"
+					]
+				},
+				"description": "Убедимся, что создан акаунт в биллинге с балансом 0"
+			},
+			"response": []
+		},
+		{
+			"name": "3. Create User2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"userId2\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username2}}\",\r\n    \"firstName\": \"Fedor\",\r\n    \"lastName\": \"Uvanov\",\r\n    \"email\": \"ivanov@example.com\",\r\n    \"phone\": \"11111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/msusers/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"msusers",
+						"user"
+					]
+				},
+				"description": "Создаем пользователя 2 в сервисе msusers\n\nСинхронно создается account в биллинге с балансом 0"
+			},
+			"response": []
+		},
+		{
+			"name": "4. View Account of User2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId2}}"
+					]
+				},
+				"description": "Убедимся, что создан акаунт в биллинге с балансом 0"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Add Money to User1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/upMoney?userId={{userId1}}&money=100",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"upMoney"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "{{userId1}}"
+						},
+						{
+							"key": "money",
+							"value": "100"
+						}
+					]
+				},
+				"description": "Положим 100 рублей на счет пользователя 1"
+			},
+			"response": []
+		},
+		{
+			"name": "6. View Account of User1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId1}}"
+					]
+				},
+				"description": "Убедимся, что баланс увеличился до 100"
+			},
+			"response": []
+		},
+		{
+			"name": "7. Create Item1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"itemId1\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"quantity\":100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/createItem",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"createItem"
+					]
+				},
+				"description": "Создаем Товар 1 на складе с количеством 100"
+			},
+			"response": []
+		},
+		{
+			"name": "8. View Item1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/item/{{itemId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"item",
+						"{{itemId1}}"
+					]
+				},
+				"description": "Проверяем создание товара"
+			},
+			"response": []
+		},
+		{
+			"name": "9. Create Item2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"itemId2\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"quantity\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/createItem",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"createItem"
+					]
+				},
+				"description": "Создаем Товар 2 на складе с количеством 0"
+			},
+			"response": []
+		},
+		{
+			"name": "10. View Item2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/item/{{itemId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"item",
+						"{{itemId2}}"
+					]
+				},
+				"description": "Проверяем создание товара"
+			},
+			"response": []
+		},
+		{
+			"name": "11. Create Order 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"orderId1\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"{{userId1}}\",\r\n    \"amount\": 15,\r\n    \"itemId\":\"{{itemId1}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/createOrder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"createOrder"
+					]
+				},
+				"description": "Создаем заказ на пользователя 1, товар 1 (1 единица), стоимость 15\n\nВ результате распределенной транзакции должно выполниться:\n\n1. Сняться деньги со счета (15 рублей)\n    \n2. Сняться позиция со склада (1 штука)\n    \n3. Создасться запись в сервисе доставки\n    \n4. Заказ должен перейти в статус CONFIRMED"
+			},
+			"response": []
+		},
+		{
+			"name": "12. View Account of User1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId1}}"
+					]
+				},
+				"description": "Убедимся, что акаунт в биллинге уменьшился на 15 рублей"
+			},
+			"response": []
+		},
+		{
+			"name": "13. View Item1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/item/{{itemId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"item",
+						"{{itemId1}}"
+					]
+				},
+				"description": "Убедимся, что количество товара снизилось на 1"
+			},
+			"response": []
+		},
+		{
+			"name": "14. View Delivery Order1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delivery/order/{{orderId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delivery",
+						"order",
+						"{{orderId1}}"
+					]
+				},
+				"description": "Убедимся, что создана запись о доставке"
+			},
+			"response": []
+		},
+		{
+			"name": "15. View Order1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/order/{{orderId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"order",
+						"{{orderId1}}"
+					]
+				},
+				"description": "Убедимся, что статус заказа перешел в CONFIRMED"
+			},
+			"response": []
+		},
+		{
+			"name": "16. Create Order 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"orderId2\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"{{userId1}}\",\r\n    \"amount\": 15,\r\n    \"itemId\":\"{{itemId2}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/createOrder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"createOrder"
+					]
+				},
+				"description": "Создаем заказ на пользователя 1, товар 2 (1 единица), стоимость 15\n\nКейс: не хватает товара на складе\n\nВ результате распределенной транзакции должно выполниться:\n\n1. Деньги со счета не снимаются (происходит возврат на счет)\n    \n2. Позиция со склада не снимается\n    \n3. Запись в сервисе доставки не создается\n    \n4. Заказ должен перейти в статус INVENTORY_FAILED"
+			},
+			"response": []
+		},
+		{
+			"name": "17. View Account of User1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId1}}"
+					]
+				},
+				"description": "Убедимся, что акаунт в биллинге не изменился"
+			},
+			"response": []
+		},
+		{
+			"name": "18. View Item2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/item/{{itemId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"item",
+						"{{itemId2}}"
+					]
+				},
+				"description": "Убедимся, что количество товара не изменилось (осталось 0)"
+			},
+			"response": []
+		},
+		{
+			"name": "19. View Delivery Order2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delivery/order/{{orderId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delivery",
+						"order",
+						"{{orderId2}}"
+					]
+				},
+				"description": "Убедимся, что запись о доставке не создана (404)"
+			},
+			"response": []
+		},
+		{
+			"name": "20. View Order2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/order/{{orderId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"order",
+						"{{orderId2}}"
+					]
+				},
+				"description": "Убедимся, что статус заказа перешел в INVENTORY_FAILED"
+			},
+			"response": []
+		},
+		{
+			"name": "21. Create Order 3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"if (responseJson && responseJson.id) {\r",
+							"    pm.collectionVariables.set(\"orderId3\", responseJson.id)\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\":\"{{userId2}}\",\r\n    \"amount\": 15,\r\n    \"itemId\":\"{{itemId1}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/createOrder",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"createOrder"
+					]
+				},
+				"description": "Создаем заказ на пользователя 2, товар 1 (1 единица), стоимость 15\n\nКейс: не хватает денег на счете\n\nВ результате распределенной транзакции должно выполниться:\n\n1. Деньги со счета не снимаются\n    \n2. Позиция со склада не снимается\n    \n3. Запись в сервисе доставки не создается\n    \n4. Заказ должен перейти в статус PAYMENT_FAILED"
+			},
+			"response": []
+		},
+		{
+			"name": "22. View Account of User2",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/billing/user/{{userId2}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"billing",
+						"user",
+						"{{userId2}}"
+					]
+				},
+				"description": "Убедимся, что акаунт в биллинге не изменился (остался 0)"
+			},
+			"response": []
+		},
+		{
+			"name": "23. View Item1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/inventory/item/{{itemId1}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"inventory",
+						"item",
+						"{{itemId1}}"
+					]
+				},
+				"description": "Убедимся, что количество товара 1 не изменилось"
+			},
+			"response": []
+		},
+		{
+			"name": "24. View Delivery Order3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delivery/order/{{orderId3}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delivery",
+						"order",
+						"{{orderId3}}"
+					]
+				},
+				"description": "Убедимся, что запись о доставке не создана (404)"
+			},
+			"response": []
+		},
+		{
+			"name": "25. View Order3",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/order/{{orderId3}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"order",
+						"{{orderId3}}"
+					]
+				},
+				"description": "Убедимся, что статус заказа перешел в PAYMENT_FAILED"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "arch.homework",
+			"type": "string"
+		},
+		{
+			"key": "username1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "username2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "itemId1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "itemId2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderId1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderId2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "orderId3",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
