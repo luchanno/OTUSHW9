@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: order
-        image: alex197612/ordersaga:v1.1
+        image: alex197612/ordersaga:v1.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9103
