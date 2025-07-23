@@ -62,7 +62,7 @@ kubectl create -f ./kafka/resources/zookeeper.yml && kubectl create -f ./kafka/r
 Рекомендуется установить расширение для newman `npm install -g newman-reporter-htmlextra`
 
 * Коллекция: https://www.postman.com/alexkorkhov/public/collection/794gnl5/otus-saga-8
-* Сценарий: https://www.postman.com/alexkorkhov/public/collection/kx2umvz/otus-saga-8-tests
-* Проверка коллекции: `newman run testing/OTUS-SAGA-8-TESTS.postman_collection.json -r htmlextra` 
-* Результат выполнения: `newman/OTUS-SAGA-8-TESTS-2025-07-22-17-30-40-141-0.html`
+* Сценарий: https://www.postman.com/alexkorkhov/public/collection/ii5u5x6/otus-idpt-9-tests (в сценарии вставлены искуственные задержки порядка 40 секунд суммарно)
+* Проверка коллекции: `newman run testing/OTUS-IDPT-9-TESTS.postman_collection.json -r htmlextra` 
+* Результат выполнения: `newman/OTUS-IDPT-9-TESTS-2025-07-23-00-06-25-281-0.html`
 
